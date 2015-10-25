@@ -7,7 +7,7 @@ arch=('i686' 'x86_64')
 license=('GPL')
 url="https://github.com/nicklan/pnmixer"
 groups=('pnmixer')
-depends=('gtk3' 'alsa-lib')
+depends=('gtk3' 'alsa-lib' 'libx11')
 optdepends=('libnotify: desktop notification support')
 makedepends=('intltool' 'libnotify')
 

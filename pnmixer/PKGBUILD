@@ -1,0 +1,28 @@
+# Maintainer: Yuexuan Gu <lastavengers@outlook.com>
+pkgname=pnmixer
+pkgver=0.6.1
+pkgrel=1
+pkgdesc="GTK volume mixer applet that runs in the system tray."
+arch=('i686' 'x86_64')
+license=('GPL')
+url="https://github.com/nicklan/pnmixer"
+groups=('pnmixer')
+depends=('gtk3' 'alsa-lib')
+optdepends=('libnotify: desktop notification support')
+makedepends=('intltool')
+
+source=(https://github.com/nicklan/pnmixer/archive/v${pkgver}.tar.gz)
+md5sums=('181db8452b3896d80c8587ca6e5cfb49')
+
+build() {
+  cd $pkgname-$pkgver
+
+  ./autogen.sh
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd $pkgname-$pkgver
+  make DESTDIR="$pkgdir" install
+}

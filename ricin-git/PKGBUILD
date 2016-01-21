@@ -14,8 +14,8 @@ depends=('gtk3' 'toxcore' 'glib2' 'json-glib' 'libsoup' 'libnotify')
 source=("git+https://github.com/RicinApp/Ricin.git"
         "git+https://github.com/RicinApp/tox-vapi.git")
 sha256sums=('SKIP' 'SKIP')
-provides=('rinic')
-conflicts=('rinic')
+provides=('ricin')
+conflicts=('ricin')
 
 prepare() {
     cd "${srcdir}/${_pkgname}"

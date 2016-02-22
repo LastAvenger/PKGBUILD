@@ -1,0 +1,43 @@
+# Maintainer: Yuexuan Gu <lastavengers@outlook.com> 
+# Contributor: Antonio Rojas <arojas@archlinux.org>
+
+pkgname=breeze-gtk-patch
+_pkgname=breeze-gtk
+pkgver=5.5.4
+pkgrel=1
+pkgdesc="Breeze widget theme for GTK 2 and 3"
+arch=(i686 x86_64)
+url='https://quickgit.kde.org/?p=breeze-gtk.git'
+license=(LGPL)
+depends=(qt5-base)
+makedepends=(extra-cmake-modules)
+groups=(plasma)
+provides=(breeze-gtk)
+conflicts=(breeze-gtk)
+source=("http://download.kde.org/stable/plasma/$pkgver/$_pkgname-$pkgver.tar.xz")
+md5sums=('d7bcd2d966533519ca7bd7c8d83f2490')
+
+prepare(){
+  mkdir -p build
+  # fix warning such as:
+  # Gtk-WARNING **: Error loading image 'file:///usr/share/themes/Breeze/gtk-3.0/assets/scrollbar-slider-overlay-horizontal.png': Error opening file: No such file or directory
+  cd $_pkgname-$pkgver/Breeze-gtk/gtk-3.0/assets
+  mv scrollbar-slider-horizontal-overlay.png scrollbar-slider-overlay-horizontal.png
+  cd -
+  cd $_pkgname-$pkgver/Breeze-dark-gtk/gtk-3.0/assets
+  mv scrollbar-slider-horizontal-overlay-dark.png scrollbar-slider-overlay-horizontal-dark.png
+}
+
+build(){
+  cd build
+  cmake ../$_pkgname-$pkgver \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="$pkgdir" install
+}

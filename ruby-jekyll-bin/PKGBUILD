@@ -1,0 +1,46 @@
+# Maintainer: SY Zhang <lastavengers@archlinuxcn.org>
+
+# for g in $(gem dependency jekyll --pipe -v 3.2.1 | cut -f1 -d ' '); do gem dependency $i --pipe | cut -f1 -d ' ';done | sort | uniq
+
+_gemname=jekyll
+pkgname=ruby-$_gemname-bin
+pkgver=3.2.1
+pkgrel=1
+pkgdesc='A simple, blog aware, static site generator, self-contained all dependencies'
+arch=(any)
+url='https://github.com/jekyll/jekyll'
+license=(MIT)
+depends=('ruby')
+conflicts=(
+    'ruby-jekyll'
+    'ruby-ffi'
+    'ruby-pathutil'
+    'ruby-colorator'
+    'ruby-jekyll-sass-converter'
+    'ruby-sass'
+    'ruby-maruku'
+    'ruby-yard'
+    'ruby-jekyll-watch'
+    'ruby-listen'
+    'ruby-rb-fsevent'
+    'ruby-rb-inotify'
+    'ruby-kramdown'
+    'ruby-liquid'
+    'ruby-liquid-2'
+    'ruby-liquid-3'
+    'ruby-mercenary'
+    'ruby-rouge'
+    'ruby-safe_yaml '
+    )
+
+options=(!emptydirs)
+source=(https://rubygems.org/downloads/$_gemname-$pkgver.gem)
+noextract=($_gemname-$pkgver.gem)
+sha256sums=('e1b062eaa0028e9c2de174a6d90a6bc8e6adeeb6493b84df77c6df2d7c5871a6')
+
+package() {
+  local _gemdir="$(ruby -e'puts Gem.default_dir')"
+  gem install --no-user-install -i "$pkgdir/$_gemdir" -n "$pkgdir/usr/bin" $_gemname-$pkgver.gem
+  rm "$pkgdir/$_gemdir/cache/$_gemname-$pkgver.gem"
+  install -D -m644 "$pkgdir/$_gemdir/gems/$_gemname-$pkgver/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
